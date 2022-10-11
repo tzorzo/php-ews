@@ -1708,7 +1708,7 @@ class Client
         $code = $this->soap->getResponseCode();
         if ($code != 200) {
             throw new \Exception(
-                "SOAP client returned status of $code.",
+                "SOAP client returned status of $code and response " . $response,
                 $code
             );
         }
@@ -1827,6 +1827,9 @@ class Oath2Soap extends \SoapClient
         }
 
         curl_setopt_array($this->ch, $this->curlOptions($action, $request));
+
+		curl_getinfo($this->ch); exit; 
+
         $response = curl_exec($this->ch);
 
         // TODO: Add some real error handling.
@@ -1882,7 +1885,7 @@ class Oath2Soap extends \SoapClient
             'Expect: 100-continue'
         );
 
-		if(!is_null($this->options['token'])) $headers[] = sprintf("Authorization: Bearer%s", $this->options['token']);
+		if(!is_null($this->options['token'])) $headers[] = sprintf("Authorization: Bearer %s", $this->options['token']);
 
 		return $headers; 
     }
@@ -1930,13 +1933,15 @@ class Oath2Soap extends \SoapClient
      */
     protected function curlOptions($action, $request)
     {
-        $options = $this->options['curlopts'] + array(
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => $this->buildHeaders($action),
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC | CURLAUTH_NTLM
-        );
+        $options = 
+			$this->options['curlopts'] + 
+			array(
+				CURLOPT_SSL_VERIFYPEER => true,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_HTTPHEADER => $this->buildHeaders($action),
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_HTTPAUTH => CURLAUTH_BEARER
+			); 
 
 		if(!empty($this->options['user']) && !empty($this->options['password'])) {
 
