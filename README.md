@@ -46,21 +46,27 @@ $ews->authWithOauth2($accesskey);
 $ews->authWithUserAndPass($username, $password);
 ```
 
-The `Client` class takes four parameters for its constructor:
+The `Client` class takes two parameters for its constructor:
 
 * `$server`: The url to the exchange server you wish to connect to, without
   the protocol. Example: mail.example.com. If you have trouble determining the
   correct url, you could try using [autodiscovery][3].
+* `$version` (optional): The version of the Exchange sever to connect to. Valid
+  values can be found at `\jamesiarmes\PhpEws\Client::VERSION_*`. Defaults to
+  Exchange 2007.
+
+The `authWithOauth2` method takes one parameters (used for office365):
+
 * `$accesskey`: An accesstoken you get from https://login.microsoftonline.com/APP-ID/oauth2/v2.0/token
   This accesstoken is 60 minuted valid, after this time use refresh token to get a new one.
   The refreshtoken is valid for a long time, when it expires, get a new one by reauth you office 365 account.
+
+The `authWithUserAndPass` method takes two parameters (used for on premises):
+
 * `$username`: The user to connect to the server with. This is usually the
   local portion of the users email address. Example: "user" if the email address
   is "user@example.com".
 * `$password`: The user's plain-text password.
-* `$version` (optional): The version of the Exchange sever to connect to. Valid
-  values can be found at `\jamesiarmes\PhpEws\Client::VERSION_*`. Defaults to
-  Exchange 2007.
 
 Once you have your `\jamesiarmes\PhpEws\Client` object, you need to build your
 request object. The type of object depends on the operation you are calling. If
