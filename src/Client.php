@@ -1847,14 +1847,6 @@ class Oath2Soap extends \SoapClient
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function __getLastRequestHeaders()
-    {
-        return implode("\n", $this->__last_request_headers) . "\n";
-    }
-
-    /**
      * Returns the response code from the last request
      *
      * @return integer
@@ -1890,7 +1882,7 @@ class Oath2Soap extends \SoapClient
             'Expect: 100-continue'
         );
 
-		if(!is_null($this->options['oauth'])) $headers[] = sprintf("Authorization: Bearer%s", $this->options['oauth']);
+		if(!is_null($this->options['token'])) $headers[] = sprintf("Authorization: Bearer%s", $this->options['token']);
 
 		return $headers; 
     }
