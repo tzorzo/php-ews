@@ -41,7 +41,9 @@ object:
 ```php
 use \jamesiarmes\PhpEws\Client;
 
-$ews = new Client($server, $username, $password, $version);
+$ews = new Client($server, $version);
+$ews->authWithOauth2($accesskey);
+$ews->authWithUserAndPass($username, $password);
 ```
 
 The `Client` class takes four parameters for its constructor:
@@ -49,6 +51,9 @@ The `Client` class takes four parameters for its constructor:
 * `$server`: The url to the exchange server you wish to connect to, without
   the protocol. Example: mail.example.com. If you have trouble determining the
   correct url, you could try using [autodiscovery][3].
+* `$accesskey`: An accesstoken you get from https://login.microsoftonline.com/APP-ID/oauth2/v2.0/token
+  this accesstoken is 60 minuted valid, after this time use refresh token to get a new one
+  the refreshtoken is valid for a long time, when it expires, get a new one by reauth you office 365 account
 * `$username`: The user to connect to the server with. This is usually the
   local portion of the users email address. Example: "user" if the email address
   is "user@example.com".
