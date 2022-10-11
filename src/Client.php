@@ -1651,7 +1651,7 @@ class Client
 
 		}
 
-        $this->soap = new SoapClient(
+        $this->soap = new Oath2Soap(
             dirname(__FILE__) . '/assets/services.wsdl',
             $authArray
         );
