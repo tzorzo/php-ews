@@ -1641,7 +1641,7 @@ class Client
 
 		if(!empty($this->token)) {
 
-			$authArray["oauth"] = $this->token; 
+			$authArray["token"] = $this->token; 
 
 		}
 		else {
