@@ -1828,8 +1828,6 @@ class Oath2Soap extends \SoapClient
 
         curl_setopt_array($this->ch, $this->curlOptions($action, $request));
 
-		curl_getinfo($this->ch); exit; 
-
         $response = curl_exec($this->ch);
 
         // TODO: Add some real error handling.
