@@ -13,7 +13,7 @@
   "require": {
     "php": ">=7.1.0",
     "ext-soap": "*",
-    "jamesiarmes/php-ntlm": "~1.0"
+    "jamesiarmes/php-ntlm": "dev-master"
   },
   "require-dev": {
     "mustache/mustache": "~2.0",
@@ -33,5 +33,11 @@
     "branch-alias": {
       "dev-master": "1.0.x-dev"
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/facilioo/php-ntlm"
+    }
+  ]
 }
