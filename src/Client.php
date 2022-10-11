@@ -1808,13 +1808,6 @@ class Oath2Soap extends \SoapClient
         );
         $this->options = $options;
 
-        // Verify that a user name and password were entered.
-        if (empty($options['user']) || empty($options['password']) || empty($options['token'])) {
-            throw new \BadMethodCallException(
-                'A username and password or a token is required!!!'
-            );
-        }
-
         parent::__construct($wsdl, $options);
     }
 
