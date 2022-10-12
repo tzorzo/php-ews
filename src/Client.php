@@ -1938,7 +1938,7 @@ class Oath2Soap extends \SoapClient
 				CURLOPT_RETURNTRANSFER => true,
 				CURLOPT_HTTPHEADER => $this->buildHeaders($action),
 				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_HTTPAUTH => CURLAUTH_BEARER
+				CURLOPT_HTTPAUTH => ((!empty($this->options['token'])) ? CURLAUTH_BEARER : CURLAUTH_BASIC | CURLAUTH_NTLM)
 			); 
 
 		if(!empty($this->options['user']) && !empty($this->options['password'])) {
