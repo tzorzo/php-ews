@@ -1879,8 +1879,7 @@ class Oath2Soap extends \SoapClient
             'Connection: Keep-Alive',
             'User-Agent: PHP-SOAP-CURL',
             'Content-Type: text/xml; charset=utf-8',
-            "SOAPAction: \"$action\"",
-            'Expect: 100-continue'
+            "SOAPAction: \"$action\""
         );
 
 		if(!is_null($this->options['token'])) $headers[] = sprintf("Authorization: Bearer %s", $this->options['token']);
