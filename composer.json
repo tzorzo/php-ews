@@ -1,5 +1,5 @@
 {
-  "name": "facilioo/php-ews",
+  "name": "celab/php-ews",
   "description": "Library for communicating with Exchange Web Services.",
   "homepage": "http://jamesarmes.com/php-ews/",
   "license": "MIT",
