@@ -1,5 +1,5 @@
 {
-  "name": "php-ews/php-ews",
+  "name": "celab/php-ews",
   "description": "Library for communicating with Exchange Web Services.",
   "homepage": "http://jamesarmes.com/php-ews/",
   "license": "MIT",
@@ -12,8 +12,7 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.1.0",
-    "ext-soap": "*",
-    "jamesiarmes/php-ntlm": "~1.0"
+    "ext-soap": "*"
   },
   "require-dev": {
     "mustache/mustache": "~2.0",

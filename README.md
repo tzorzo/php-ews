@@ -59,6 +59,7 @@ The `authWithOauth2` method takes one parameters (used for office365):
 
 * `$accesskey`: An accesstoken you get from https://login.microsoftonline.com/APP-ID/oauth2/v2.0/token (Read the next paragraph for more information)
 
+
 The `authWithUserAndPass` method takes two parameters (used for on premises):
 
 * `$username`: The user to connect to the server with. This is usually the
