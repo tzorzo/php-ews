@@ -65,6 +65,71 @@ determine the correct classes to use using the provided docblocks.
 The request objects are build similar to the XML body of the request. See the
 resources section below for more information on building the requests.
 
+## Prepare your Office 365 app for app-only authentication
+
+As described in the [official microsoft documentation][9] you need to create a new application with a special authorization role.
+After you have created the new application locate the requiredResourceAccess property in the manifest, and add the following inside the square brackets ([]):
+
+```json
+    {
+			"resourceAppId": "00000002-0000-0ff1-ce00-000000000000",
+			"resourceAccess": [
+				{
+					"id": "dc890d15-9560-4a4c-9b7f-a736ec74ec40",
+					"type": "Role"
+				},
+				{
+					"id": "3b5f3d61-589b-4a3c-a359-5dd4b5ee5bd5",
+					"type": "Scope"
+				}
+			]
+		}
+```
+
+Return to the authorization page and select "Grant admin consent" for "Office 365 Exchange Online -> full_access_as_app".
+
+ * Select Certificates & Secrets in the left-hand navigation under Manage
+ * Select New client secret, enter a short description and select Add
+ * Copy the Value of the newly added client secret and save it, you will need it later
+
+Ensure that you are able to retrive the token for your app:
+
+```php
+  $token = Cache::remember('ews_token', 3000, function () {
+      $postOptions = [
+          'http_errors' => false,
+          'form_params' => [
+              'client_id' => 'YOUR CLIENT ID',
+              'client_secret' => 'YOUR SECRET',
+              'grant_type' => 'client_credentials',
+              'scope' => 'https://outlook.office365.com/.default'
+          ]
+      ];
+
+      $url = 'https://login.microsoftonline.com/YOUR-TENANT/oauth2/v2.0/token'; //YOUR- TENANT is your primary domain (eg contoso.com)
+
+      $client = new \GuzzleHttp\Client();
+      $response = $client->request('POST', $url, $postOptions);
+      $response = $response->getBody()->__toString();
+
+      $response = json_decode($response);
+
+      return $response->access_token;
+  });
+```
+
+Now you need to impersonate as a valid user mailbox:
+
+```php
+$client = new Client($this->host, $this->version);
+$sid = new ConnectingSIDType();
+$sid->SmtpAddress = "user@contoso.com";
+$imp = new ExchangeImpersonationType();
+$imp->ConnectingSID = $sid;
+$client->setImpersonation($imp);
+$client->authWithOauth2($token);
+```
+
 ## Examples
 
 There are a number of examples included in the examples directory. These
@@ -94,3 +159,4 @@ requests received via email will be directed here.
 [6]: http://msdn.microsoft.com/library/bb204119\(v=exchg.140\).aspx
 [7]: http://msdn.microsoft.com/library/bb204119\(v=exchg.150\).aspx
 [8]: https://github.com/jamesiarmes/php-ews/issues
+[9]: https://learn.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-authenticate-an-ews-application-by-using-oauth
