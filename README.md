@@ -71,19 +71,19 @@ As described in the [official microsoft documentation][9] you need to create a n
 After you have created the new application locate the requiredResourceAccess property in the manifest, and add the following inside the square brackets ([]):
 
 ```json
+{
+  "resourceAppId": "00000002-0000-0ff1-ce00-000000000000",
+  "resourceAccess": [
     {
-			"resourceAppId": "00000002-0000-0ff1-ce00-000000000000",
-			"resourceAccess": [
-				{
-					"id": "dc890d15-9560-4a4c-9b7f-a736ec74ec40",
-					"type": "Role"
-				},
-				{
-					"id": "3b5f3d61-589b-4a3c-a359-5dd4b5ee5bd5",
-					"type": "Scope"
-				}
-			]
-		}
+      "id": "dc890d15-9560-4a4c-9b7f-a736ec74ec40",
+      "type": "Role"
+    },
+    {
+      "id": "3b5f3d61-589b-4a3c-a359-5dd4b5ee5bd5",
+      "type": "Scope"
+    }
+  ]
+}
 ```
 
 Return to the authorization page and select "Grant admin consent" for "Office 365 Exchange Online -> full_access_as_app".
@@ -95,27 +95,27 @@ Return to the authorization page and select "Grant admin consent" for "Office 36
 Ensure that you are able to retrive the token for your app:
 
 ```php
-  $token = Cache::remember('ews_token', 3000, function () {
-      $postOptions = [
-          'http_errors' => false,
-          'form_params' => [
-              'client_id' => 'YOUR CLIENT ID',
-              'client_secret' => 'YOUR SECRET',
-              'grant_type' => 'client_credentials',
-              'scope' => 'https://outlook.office365.com/.default'
-          ]
-      ];
+$token = Cache::remember('ews_token', 3000, function () {
+    $postOptions = [
+        'http_errors' => false,
+        'form_params' => [
+            'client_id' => 'YOUR CLIENT ID',
+            'client_secret' => 'YOUR SECRET',
+            'grant_type' => 'client_credentials',
+            'scope' => 'https://outlook.office365.com/.default'
+        ]
+    ];
 
-      $url = 'https://login.microsoftonline.com/YOUR-TENANT/oauth2/v2.0/token'; //YOUR- TENANT is your primary domain (eg contoso.com)
+    $url = 'https://login.microsoftonline.com/YOUR-TENANT/oauth2/v2.0/token'; //YOUR- TENANT is your primary domain (eg contoso.com)
 
-      $client = new \GuzzleHttp\Client();
-      $response = $client->request('POST', $url, $postOptions);
-      $response = $response->getBody()->__toString();
+    $client = new \GuzzleHttp\Client();
+    $response = $client->request('POST', $url, $postOptions);
+    $response = $response->getBody()->__toString();
 
-      $response = json_decode($response);
+    $response = json_decode($response);
 
-      return $response->access_token;
-  });
+    return $response->access_token;
+});
 ```
 
 Now you need to impersonate as a valid user mailbox:
